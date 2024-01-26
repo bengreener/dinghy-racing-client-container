@@ -2,8 +2,6 @@ package com.bginfosys.dinghyracingclientcontainer.security.model;
 
 import java.util.Collection;
 
-import com.bginfosys.dinghyracingclientcontainer.security.model.Role;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
