@@ -1,8 +1,14 @@
 package com.bginfosys.dinghyracingclientcontainer.security.model;
 
+import java.util.Collection;
+
+import com.bginfosys.dinghyracingclientcontainer.security.model.Role;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,6 +22,9 @@ public class User {
 	private String username;
 	
 	private String password;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Collection<Role> roles;
 	
 	public User() {
 		
@@ -47,5 +56,19 @@ public class User {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	/**
+	 * @return the roles
+	 */
+	public Collection<Role> getRoles() {
+		return roles;
+	}
+
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
 	}
 }
