@@ -1,4 +1,0 @@
-{
-	"httpRootURL": "http://bginfosys.com:8081/dinghyracing/api",
-	"wsRootURL": "ws://bginfosys.com:8081/dinghyracingws"
-}
