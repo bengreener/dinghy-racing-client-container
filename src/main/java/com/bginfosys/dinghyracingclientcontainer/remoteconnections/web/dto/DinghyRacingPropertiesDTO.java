@@ -2,18 +2,18 @@ package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.dto;
 
 public class DinghyRacingPropertiesDTO {
 	
-	private String httpURL;
+	private String httpRootURL;
 	
 	private String wsRootURL;
 
-	public String getHttpURL() {
-		return httpURL;
-	}
-
 	public DinghyRacingPropertiesDTO() {}
 	
-	public void setHttpURL(String httpURL) {
-		this.httpURL = httpURL;
+	public String getHttpRootURL() {
+		return httpRootURL;
+	}
+	
+	public void setHttpRootURL(String httpRootURL) {
+		this.httpRootURL = httpRootURL;
 	}
 
 	public String getWsRootURL() {
