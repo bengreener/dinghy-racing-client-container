@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "dinghy-racing-httpRootURL",
+    "type": "java.lang.String",
+    "description": "Connection URL for Dinghy Racing REST service"
+  },
+  {
+    "name": "dinghy-racing-wsRootURL",
+    "type": "java.lang.String",
+    "description": "Connection URL for Dinghy Racing WebSocket service"
+  }
+]}
