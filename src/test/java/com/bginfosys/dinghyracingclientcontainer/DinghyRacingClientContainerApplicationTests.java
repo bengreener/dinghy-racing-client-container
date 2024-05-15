@@ -25,7 +25,7 @@ import org.springframework.test.context.ActiveProfiles;
 class DinghyRacingClientContainerApplicationTests {
 
 	@Test
-		void contextLoads() {
+	void contextLoads() {
 	}
 
 }
