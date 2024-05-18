@@ -1,12 +1,17 @@
--- v2024.3.1
-CREATE DATABASE `dinghy_racing_client` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+-- v2024.5.2
+CREATE DATABASE IF NOT EXISTS `dinghy_racing_client` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE dinghy_racing_client;
 
-CREATE TABLE hibernate_sequence (
-	next_val BIGINT
+CREATE TABLE role_seq (
+	next_val bigint
 ) engine=InnoDB;
-INSERT INTO hibernate_sequence VALUES ( 1 );
+INSERT INTO role_seq VALUES ( 1 );
+
+CREATE TABLE user_seq (
+	next_val bigint
+) engine=InnoDB;
+INSERT INTO user_seq VALUES ( 1 );
 
 CREATE TABLE `user` (
 	id BIGINT NOT NULL, 
@@ -32,4 +37,4 @@ INSERT INTO role (id, name) VALUES (1, 'RACE_SCHEDULER');
 INSERT INTO role (id, name) VALUES (2, 'RACE_OFFICER');
 INSERT INTO role (id, name) VALUES (3, 'COMPETITOR');
 
-UPDATE hibernate_sequence SET next_val = 4;
+UPDATE role_seq SET next_val = (SELECT MAX(id) + 50 FROM role);
