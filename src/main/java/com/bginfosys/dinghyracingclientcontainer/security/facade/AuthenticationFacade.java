@@ -16,7 +16,6 @@
 
 package com.bginfosys.dinghyracingclientcontainer.security.facade;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
