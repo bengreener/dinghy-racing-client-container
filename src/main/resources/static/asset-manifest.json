@@ -1,10 +1,11 @@
 {
   "files": {
-    "main.js": "./static/js/main.fc5b994a.js",
+    "main.js": "./static/js/main.4439c251.js",
     "index.html": "./index.html",
-    "main.fc5b994a.js.map": "./static/js/main.fc5b994a.js.map"
+    "static/media/tick-worker.js": "./static/media/tick-worker.b811cab457f08106092a.js",
+    "main.4439c251.js.map": "./static/js/main.4439c251.js.map"
   },
   "entrypoints": [
-    "static/js/main.fc5b994a.js"
+    "static/js/main.4439c251.js"
   ]
 }
