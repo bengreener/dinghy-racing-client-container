@@ -1,1 +1,0 @@
-var ticker;function startTicker(){const t=t=>{ticker=setTimeout((()=>{postMessage(null),t(t)}),1e3-Date.now()%1e3)};t(t)}function stopTicker(){clearInterval(ticker)}onmessage=function(t){switch(t.data){case"start":startTicker();break;case"stop":stopTicker();break;default:console.log(`tick-worker: Unknown command: ${t.data}`)}};
