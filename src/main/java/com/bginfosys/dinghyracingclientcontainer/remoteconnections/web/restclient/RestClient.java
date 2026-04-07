@@ -49,30 +49,44 @@ public class RestClient {
 		JsonNode root;
 		try {
 			root = objectMapper.readTree(response.getBody());
-			List<Entry> signedUp = getSignedUpByURL(root.path("_links").path("signedUp").path("href").asText());
+			List<Entry> signedUp = getEntriesByURL(root.path("_links").path("signedUp").path("href").asText());
 			race = new Race(root.path("name").asText(), root.path("plannedLaps").asLong(), signedUp);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// get entries
-		
 		return race;
 	}
 	
-	public List<Entry> getSignedUpByURL(String url) {
+	public Entry getEntryByURL(String url) {
+		Entry entry = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+		JsonNode root;
+		try {
+			root = objectMapper.readTree(response.getBody());
+			Competitor helm = getCompetitorByURL(root.path("_links").path("helm").path("href").asText());
+			Dinghy dinghy = getDinghyByURL(root.path("_links").path("dinghy").path("href").asText());
+			entry = new Entry(helm, dinghy);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		return entry;
+	}
+	
+	public List<Entry> getEntriesByURL(String url) {
 		List<Entry> signedUp = new ArrayList<Entry>();
 		ObjectMapper objectMapper = new ObjectMapper();
 		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 		JsonNode root;
 		try {
 			root = objectMapper.readTree(response.getBody());
-			JsonNode entries = root.path("_embedded").path("entries");
-			if (entries.isArray()) {
-				for (JsonNode entryNode : entries) {
-					Competitor helm = getCompetitorByURL(entryNode.path("_links").path("helm").path("href").asText());
-					Dinghy dinghy = getDinghyByURL(entryNode.path("_links").path("dinghy").path("href").asText());
-					signedUp.add(new Entry(helm, dinghy));
+			JsonNode signedUps = root.path("_embedded").path("signedUps");
+			if (signedUps.isArray()) {
+				for (JsonNode entryNode : signedUps) {
+					Entry entry = getEntryByURL(entryNode.path("_links").path("entry").path("href").asText());					
+					signedUp.add(entry);
 				}
 			}
 		} catch (JsonProcessingException e) {
