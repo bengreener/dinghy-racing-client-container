@@ -15,12 +15,13 @@
  */
 package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model;
 
+import java.time.Duration;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Entry(Competitor helm, Dinghy dinghy) implements Comparable<Entry> {
+public record Entry(Competitor helm, Dinghy dinghy, Duration time, String scoringAbbreviation, Integer lapsSailed) implements Comparable<Entry> {
 	
 	public Competitor getHelm() {
 		return helm;
@@ -28,6 +29,18 @@ public record Entry(Competitor helm, Dinghy dinghy) implements Comparable<Entry>
 	
 	public Dinghy getDinghy() {
 		return dinghy();
+	}
+	
+	public Duration getTime() {
+		return time;
+	}
+	
+	public String getScoringAbbreviation() {
+		return scoringAbbreviation;
+	}
+	
+	public Integer getLapsSailed() {
+		return lapsSailed;
 	}
 
 	@Override

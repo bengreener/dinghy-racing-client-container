@@ -15,14 +15,28 @@
  */
 package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model;
 
-public record DinghyClass(String name, Integer portsmouthNumber) {
-	
-	public String getName() {
-		return name;
+import java.time.Duration;
+import java.util.regex.Pattern;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record SignedUp(Entry entry, Integer position, Duration correctedTime) implements Comparable<SignedUp>{
+
+	public Entry getEntry() {
+		return entry;
 	}
 	
-	public Integer getPortsmouthNumber() {
-		return portsmouthNumber;
+	public Integer getPosition() {
+		return position;
+	}
+	
+	public Duration getCorrectedTime() {
+		return correctedTime;
 	}
 
+	@Override
+	public int compareTo(SignedUp signedUp) {
+		return position.compareTo(signedUp.position);
+	}
 }

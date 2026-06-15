@@ -22,7 +22,6 @@
 		<link rel="stylesheet" href="../main.css"/>
 		<link rel="stylesheet" href="../w3.css"/>
 		<link rel="stylesheet" href="../w3-bginfosys-extensions.css"/>
-		<link rel="stylesheet" href="../w3-theme.css"/>
 		<link rel="stylesheet" href="../lap-sheet.css"/>
 		<title>Lap Sheet</title>
 	</head>
@@ -38,10 +37,10 @@
 					<th class="bgis-border-2 w3-border-black bgis-table-cell" th:text="|Lap ${i + 1}|" />
 				</th:block>
 			</tr>
-			<tr class="bgis-border-2" th:each="entry: ${race.signedUp}">
-				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${entry.dinghy.dinghyClass.name}" />
-				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${entry.dinghy.sailNumber}" />
-				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${entry.helm.name}" />
+			<tr class="bgis-border-2" th:each="signedUp: ${race.signedUp}">
+				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${signedUp.entry.dinghy.dinghyClass.name}" />
+				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${signedUp.entry.dinghy.sailNumber}" />
+				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${signedUp.entry.helm.name}" />
 				<th:block th:each="i: ${#numbers.sequence(0, race.plannedLaps - 1)}">
 					<td class="bgis-border-2 w3-border-black bgis-table-cell" >                    </td>
 				</th:block>

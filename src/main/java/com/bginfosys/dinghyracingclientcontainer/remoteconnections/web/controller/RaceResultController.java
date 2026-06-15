@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
+
 package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,15 @@ import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclien
 import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model.Race;
 
 @Controller
-public class LapSheetController {
-	
+public class RaceResultController {
+
 	@Autowired
 	private RestClient restClient;
-		
-	@GetMapping("/lap-sheet/{id}") 
-	public String lapSheet(@PathVariable("id") Long id, Model model) {
+	
+	@GetMapping("/race-result/{id}")
+	public String raceResult(@PathVariable("id") Long id, Model model) {
 		Race race = restClient.getRaceById(id);
 		model.addAttribute("race", race);
-		return "lap-sheet";
+		return "race-result";
 	}
 }

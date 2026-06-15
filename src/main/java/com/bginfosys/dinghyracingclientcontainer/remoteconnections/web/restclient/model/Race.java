@@ -20,7 +20,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Race(String name, Long plannedLaps, List<Entry> signedUp) {
+public record Race(String name, Long plannedLaps, List<SignedUp> signedUp) {
 
 	public String getName() {
 		return name;
@@ -30,7 +30,7 @@ public record Race(String name, Long plannedLaps, List<Entry> signedUp) {
 		return plannedLaps;
 	}
 	
-	public List<Entry> getSignedUp() {
+	public List<SignedUp> getSignedUp() {
 		return signedUp;
 	}
 }
