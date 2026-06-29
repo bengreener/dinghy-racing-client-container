@@ -13,10 +13,10 @@ public class DinghyRacingClientContainerConfigurer implements WebMvcConfigurer {
 			.addResourceHandler("/external/{:local.css}")
 			.addResourceLocations("file:./local/"); // can't pick up file from web application root; fails ResourceHandlerUtils.isResourceUnderLocation() check
 		registry
-			.addResourceHandler("/external/{:\\w+\\.png}")
+			.addResourceHandler("/external/{:[\\w\\d-]+.png}")
 			.addResourceLocations("file:./local/"); // can't pick up file from web application root; fails ResourceHandlerUtils.isResourceUnderLocation() check
 		registry
-			.addResourceHandler("/external/{:\\w+\\.svg}")
+			.addResourceHandler("/external/{:[\\w\\d-]+.svg}")
 			.addResourceLocations("file:./local/"); // can't pick up file from web application root; fails ResourceHandlerUtils.isResourceUnderLocation() check
 	}
 }
