@@ -27,8 +27,10 @@
 		<title>Race Results</title>
 	</head>
 	<body>
+		<img class="club-pennant" />
 		<h1 class="w3-center club-pennant-before" >Chipstead Sailing Club</h1>
 		<h2 class="w3-center" th:text="${race.name}" ></h2>
+		<button class="no-print" onclick="window.print()">Print Results</button>
 		<div>
 		<table class="result-table bgis-table bgis-border-2 w3-border-black w3-auto">
 			<tr>

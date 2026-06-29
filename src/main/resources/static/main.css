@@ -224,3 +224,9 @@ button.selected {
 		height: 77vh;
 	}
 }
+
+@media print {
+	.no-print {
+		display: none;
+	}
+}
