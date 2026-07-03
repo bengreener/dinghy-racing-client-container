@@ -32,6 +32,9 @@ public record SignedUp(Entry entry, Integer position, Duration correctedTime) im
 	}
 	
 	public Duration getCorrectedTime() {
+		if (correctedTime.equals(Duration.ofSeconds((long)Double.POSITIVE_INFINITY))) {
+			return Duration.ZERO;
+		}
 		return correctedTime;
 	}
 
