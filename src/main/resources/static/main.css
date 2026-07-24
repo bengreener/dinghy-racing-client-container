@@ -62,12 +62,10 @@ button.selected {
 }
 .disabled {
 	/* applies to disabled race entries (HTML class applied through code/ html) */
-	color: lightgray;
-}
-:disabled {
-	/* applies to disabled input elements via disabled HTML element attribute */
-	/* class used to indicate elemnt is disabled while processing takes place; e.g. updating server and waiting for response */
-	background-color: lightGray;
+	/* color: lightgray; */
+	cursor:not-allowed!important;
+	opacity:0.3;
+	pointer-events:none!important;
 }
 .display-port {
 	overflow: hidden;
@@ -109,29 +107,25 @@ button.selected {
 .clickable-table-row {
 	cursor: pointer;
 }
-.on-course-side {
-	background-color: lightgrey;
+.on-course-side,.did-not-compete,.did-not-start,.did-not-finish,.retired,.disqualified {
+	background-color: lightgrey!important;
 }
-.did-not-compete {
-	background-color: darkgrey;
-}
-.did-not-start {
-	background-color: lightgrey;
-}
-.did-not-finish {
-	background-color: gainsboro;
-}
-.retired {
-	background-color: gainsboro;
-}
-.disqualified {
-	background-color: grey;
+.on-course-side:hover,.did-not-compete:hover,.did-not-start:hover,.did-not-finish:hover,.retired:hover,.disqualified:hover {
+	background-color: lightgrey!important;
+	color: black!important;
 }
 .on-last-lap {
-	background-color: #FFEE75;
+	background-color: #ffee75!important;
+}
+.on-last-lap:hover {
+	background-color: #fadd00!important;
+	color: black!important;
 }
 .finished-race {
-	background-color: palegreen;
+	background-color: palegreen!important;
+}
+.finished-race:hover {
+	background-color: green!important;
 }
 .warning-flag-prepare-raise {
 	padding: 5pt;
@@ -190,18 +184,37 @@ button.selected {
 }
 
 .small-loader {
-	/* border: 4px solid #f3f3f3; /* Light grey */
-	/* border-top: 4px solid #3498db; /* Blue */
-	/* border-radius: 50%;
-	width: 30px;
-	height: 30px; */
-	
 	border: .5ex solid #f3f3f3; /* Light grey */
 	border-top: .5ex solid #3498db; /* Blue */
 	border-radius: 50%;
 	width: 3ex;
 	height: 3ex;
 	animation: spin 2s linear infinite;
+}
+
+.signal-flag {
+	object-fit: contain;
+}
+
+.signal-flag-container {
+    display: flex;
+    justify-content: center;
+	align-items: center;
+	aspect-ratio: 4/3;
+}
+
+.signal-flag-action-icon {
+	scale: 3;
+	z-index: 1;
+	object-position: center;
+}
+
+.one-minute-to-flag-change {
+	background-color: orange;
+}
+
+.flipped {
+	transform: rotate(180deg);
 }
 
 @keyframes spin {
@@ -224,5 +237,11 @@ button.selected {
 @media (max-width:600px) {
 	.display-port {
 		height: 77vh;
+	}
+}
+
+@media print {
+	.no-print {
+		display: none;
 	}
 }
