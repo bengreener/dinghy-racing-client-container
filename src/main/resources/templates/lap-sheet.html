@@ -25,7 +25,7 @@
 		<link rel="stylesheet" href="../lap-sheet.css"/>
 		<title>Lap Sheet</title>
 	</head>
-	<body>
+	<body class="print-no-scroll" style="height:100vh;overflow:auto;">
 		<h1 th:text="${race.name}"></h1>
 		<button class="no-print" onclick="window.print()">Print Sheet</button>
 		<div>
