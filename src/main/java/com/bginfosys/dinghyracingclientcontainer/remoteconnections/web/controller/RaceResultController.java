@@ -16,25 +16,33 @@
 
 package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.RestClient;
-import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model.Race;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.mvcmodel.Race;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.mvcmodel.SignedUp;
 
 @Controller
 public class RaceResultController {
 
-	@Autowired
 	private RestClient restClient;
+	
+	public RaceResultController(RestClient restClient) {
+		this.restClient = restClient;
+	}
 	
 	@GetMapping("/race-result/{id}")
 	public String raceResult(@PathVariable("id") Long id, Model model) {
-		Race race = restClient.getRaceById(id);
+		Race race = new Race(restClient.getRaceById(id), restClient);
+		List<SignedUp> signedUp = race.getSignedUp();
+		signedUp.sort(null);
 		model.addAttribute("race", race);
+		model.addAttribute("signedUp", signedUp);
 		return "race-result";
 	}
 }

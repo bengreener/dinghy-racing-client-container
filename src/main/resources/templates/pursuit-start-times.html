@@ -1,0 +1,51 @@
+<!--
+/*
+ * Copyright 2022-2024 BG Information Systems Ltd
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. 
+ */ -->
+ 
+ <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../normalize.css"/>
+		<link rel="stylesheet" href="../main.css"/>
+		<link rel="stylesheet" href="../w3.css"/>
+		<link rel="stylesheet" href="../w3-bginfosys-extensions.css"/>
+    	<link rel="stylesheet" href="../external/local.css" />
+		<title>Pursuit Starts</title>
+	</head>
+	<body class="print-no-scroll" style="height:100vh;overflow:auto;">
+		<img class="club-pennant" />
+		<h1 class="w3-center club-pennant-before" >Chipstead Sailing Club</h1>
+		<h2 class="w3-center" th:text="|${race.name} Class Starts|" ></h2>
+		<button class="no-print" onclick="window.print()">Print Starts</button>
+		<div>
+		<table class="result-table bgis-table bgis-border-2 w3-border-black w3-auto">
+			<tr>
+				<th class="bgis-border-2 w3-border-black bgis-table-cell">Class</th>
+				<th class="bgis-border-2 w3-border-black bgis-table-cell">Start Time</th>
+				<th class="bgis-border-2 w3-border-black bgis-table-cell">Offset</th>
+				<th class="bgis-border-2 w3-border-black bgis-table-cell">Portsmouth Number</th>
+			</tr>
+			<tr class="bgis-border-2" th:each="classStart: ${dinghyClassStarts}" >
+				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${classStart.dinghyClass.name}" />
+				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${#temporals.format(classStart.startTime, 'HH:mm:ss')}" />
+				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${@durationFormatter.format(classStart.startTimeOffset)}" />
+				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${classStart.dinghyClass.portsmouthNumber}" />
+			</tr>
+		</table>
+		</div>
+	</body>
+</html>

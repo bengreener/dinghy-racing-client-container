@@ -13,22 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model;
+package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel;
 
 import java.time.Duration;
-import java.util.regex.Pattern;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record SignedUp(Entry entry, Integer position, Duration correctedTime) implements Comparable<SignedUp>{
+public class SignedUpHalDTO extends AbstractHalDTO {
 
-	public Entry getEntry() {
-		return entry;
+	private Duration correctedTime;
+	
+	private Integer position;
+		
+	public SignedUpHalDTO() {}
+	
+	public SignedUpHalDTO(Duration correctedTime, Integer position, Map<String, Link> links) {
+		super(links);
+		this.correctedTime = correctedTime;
+		this.position = position;
 	}
 	
 	public Integer getPosition() {
 		return position;
+	}
+	
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 	
 	public Duration getCorrectedTime() {
@@ -37,9 +49,9 @@ public record SignedUp(Entry entry, Integer position, Duration correctedTime) im
 		}
 		return correctedTime;
 	}
-
-	@Override
-	public int compareTo(SignedUp signedUp) {
-		return position.compareTo(signedUp.position);
+	
+	public void setCorrectedTime(Duration correctedTime) {
+		this.correctedTime = correctedTime;
 	}
+	
 }

@@ -19,4 +19,5 @@ public class DinghyRacingClientContainerConfigurer implements WebMvcConfigurer {
 			.addResourceHandler("/external/{:[\\w\\d- ]+.svg}")
 			.addResourceLocations("file:./local/"); // can't pick up file from web application root; fails ResourceHandlerUtils.isResourceUnderLocation() check
 	}
+	
 }

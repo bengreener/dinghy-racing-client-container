@@ -13,18 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model;
+package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel;
+
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Dinghy(String sailNumber, DinghyClass dinghyClass) {
+public class DinghyClassHalDTO extends AbstractHalDTO {
 	
-	public String getSailNumber() {
-		return sailNumber;
+	private String name;
+	
+	private Integer portsmouthNumber;
+	
+	DinghyClassHalDTO() {}
+	
+	DinghyClassHalDTO(String name, Integer portsmouthNumber, Map<String, Link> links) {
+		super(links);
+		this.name = name;
+		this.portsmouthNumber = portsmouthNumber;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name= name ;
+	}
+	
+	public Integer getPortsmouthNumber() {
+		return portsmouthNumber;
+	}
+	
+	public void setPortsmouthNumber(Integer portsmouthNumber) {
+		this.portsmouthNumber = portsmouthNumber;
 	}
 
-	public DinghyClass getDinghyClass() {
-		return dinghyClass;
-	}
 }

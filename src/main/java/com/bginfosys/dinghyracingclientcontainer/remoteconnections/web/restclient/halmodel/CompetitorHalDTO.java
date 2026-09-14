@@ -13,16 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model;
+package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel;
 
-public record DinghyClass(String name, Integer portsmouthNumber) {
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CompetitorHalDTO extends AbstractHalDTO {
+
+	private String name;
+	
+	CompetitorHalDTO() {}
+	
+	CompetitorHalDTO(String name, Map<String, Link> links) {
+		super(links);
+		this.name = name;
+	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public Integer getPortsmouthNumber() {
-		return portsmouthNumber;
+	public void setName(String name) {
+		this.name= name ;
 	}
-
 }

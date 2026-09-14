@@ -38,7 +38,7 @@
 					<th class="bgis-border-2 w3-border-black bgis-table-cell" th:text="|Lap ${i + 1}|" />
 				</th:block>
 			</tr>
-			<tr class="bgis-border-2" th:each="signedUp: ${race.signedUp}">
+				<tr class="bgis-border-2" th:each="signedUp: ${signedUp}">
 				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${signedUp.entry.dinghy.dinghyClass.name}" />
 				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${signedUp.entry.dinghy.sailNumber}" />
 				<td class="bgis-border-2 w3-border-black bgis-table-cell" th:text="${signedUp.entry.helm.name}" />

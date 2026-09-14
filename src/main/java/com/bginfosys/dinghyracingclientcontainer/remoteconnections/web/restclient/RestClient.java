@@ -15,23 +15,25 @@
  */
 package com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model.Competitor;
-import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model.Dinghy;
-import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model.DinghyClass;
-import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model.Entry;
-import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model.Race;
-import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.model.SignedUp;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel.CompetitorHalDTO;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel.DinghyHalDTO;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel.DinghyClassHalDTO;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel.EntryHalDTO;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel.FleetHalDTO;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel.RaceHalDTO;
+import com.bginfosys.dinghyracingclientcontainer.remoteconnections.web.restclient.halmodel.SignedUpHalDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 public class RestClient {
 	
@@ -43,127 +45,74 @@ public class RestClient {
 	public RestClient(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
+	
+	public String getHttpRootURL() {
+		return httpRootURL;
+	}
 
-	public Race getRaceById(Long raceId) {
-		Race race = null;
-		ObjectMapper objectMapper = new ObjectMapper();
-		ResponseEntity<String> response = restTemplate.getForEntity(httpRootURL + "/races/" + raceId.toString(), String.class);
-		JsonNode root;
-		try {
-			root = objectMapper.readTree(response.getBody());
-			List<SignedUp> signedUp = getSignedUpToByURL(root.path("_links").path("signedUp").path("href").asText());
-			race = new Race(root.path("name").asText(), root.path("plannedLaps").asLong(), signedUp);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return race;
+	public RaceHalDTO getRaceById(Long raceId) {
+		return restTemplate.getForObject(httpRootURL + "/races/" + raceId.toString(), RaceHalDTO.class);
 	}
 	
-	public Entry getEntryByURL(String url) {
-		Entry entry = null;
-		ObjectMapper objectMapper = new ObjectMapper();
-		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-		JsonNode root;
-		try {
-			root = objectMapper.readTree(response.getBody());
-			Competitor helm = getCompetitorByURL(root.path("_links").path("helm").path("href").asText());
-			Dinghy dinghy = getDinghyByURL(root.path("_links").path("dinghy").path("href").asText());
-			Duration time = Duration.parse(root.path("sumOfLapTimes").asText());
-			String scoringAbbreviation = root.path("scoringAbbreviation").asText();
-			Integer lapsSailed = root.path("lapsSailed").asInt();
-			entry = new Entry(helm, dinghy, time, scoringAbbreviation, lapsSailed);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		return entry;
+	public EntryHalDTO getEntryByURL(String url) {
+		return restTemplate.getForObject(url, EntryHalDTO.class);
 	}
 	
-//	public List<Entry> getEntriesByURL(String url) {
-//		List<Entry> signedUp = new ArrayList<Entry>();
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-//		JsonNode root;
-//		try {
-//			root = objectMapper.readTree(response.getBody());
-//			JsonNode signedUps = root.path("_embedded").path("signedUps");
-//			if (signedUps.isArray()) {
-//				for (JsonNode entryNode : signedUps) {
-//					Entry entry = getEntryByURL(entryNode.path("_links").path("entry").path("href").asText());					
-//					signedUp.add(entry);
-//				}
-//			}
-//		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		signedUp.sort(null);
-//		return signedUp;
-//	}
-	
-	public List<SignedUp> getSignedUpToByURL(String url) {
-		List<SignedUp> signedUpTo = new ArrayList<SignedUp>();
-		ObjectMapper objectMapper = new ObjectMapper();
-		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-		JsonNode root;
+	public List<SignedUpHalDTO> getSignedUpToByURL(String url) {
+		List<SignedUpHalDTO> signedUpTo = new ArrayList<SignedUpHalDTO>();
+		ObjectMapper objectMapper = JsonMapper.builder()
+				.addModule(new JavaTimeModule())
+				.build();
+		String json = restTemplate.getForEntity(url, String.class).getBody();
 		try {
-			root = objectMapper.readTree(response.getBody());
-			JsonNode signedUps = root.path("_embedded").path("signedUps");
-			if (signedUps.isArray()) {
-				for (JsonNode entryNode : signedUps) {
-					SignedUp signedUp = getSignedUpByURL(entryNode.path("_links").path("self").path("href").asText());					
-					signedUpTo.add(signedUp);
-				}
-			}
-		} catch (JsonProcessingException e) {
+			TypeReference<List<SignedUpHalDTO>> typeReference = new TypeReference<List<SignedUpHalDTO>>() {};
+			JsonNode rootNode = objectMapper.readTree(json);
+			JsonNode signedUpsNode = rootNode.path("_embedded").path("signedUps");
+			signedUpTo = objectMapper.convertValue(signedUpsNode, typeReference);
+		}
+		catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		signedUpTo.sort(null);
+		}	
 		return signedUpTo;
 	}
 	
-	public SignedUp getSignedUpByURL(String url) {
-		SignedUp signedUp = null;
-		ObjectMapper objectMapper = new ObjectMapper();
-		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-		JsonNode root;
-		try {
-			root = objectMapper.readTree(response.getBody());
-			Entry entry = getEntryByURL(root.path("_links").path("entry").path("href").asText());
-			Integer position = root.path("position").asInt();
-			Duration correctedTime = Duration.parse(root.path("correctedTime").asText());
-			signedUp = new SignedUp(entry, position, correctedTime);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		return signedUp;
+	public SignedUpHalDTO getSignedUpByURL(String url) {
+		return restTemplate.getForObject(url, SignedUpHalDTO.class);
 	}
 	
-	public Competitor getCompetitorByURL(String url) {
-		return restTemplate.getForObject(url, Competitor.class);
+	public CompetitorHalDTO getCompetitorByURL(String url) {
+		return restTemplate.getForObject(url, CompetitorHalDTO.class);
 	}
 	
-	public Dinghy getDinghyByURL(String url) {
-		Dinghy dinghy = null;
-		ObjectMapper objectMapper = new ObjectMapper();
-		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-		JsonNode root;
+	public DinghyHalDTO getDinghyByURL(String url) {
+		return restTemplate.getForObject(url, DinghyHalDTO.class);
+	}
+	
+	public DinghyClassHalDTO getDinghyClassByURL(String url) {
+		return restTemplate.getForObject(url, DinghyClassHalDTO.class);
+	}
+	
+	public List<DinghyClassHalDTO> getDinghyClassesByURL(String url) {
+		List<DinghyClassHalDTO> dinghyClasses = new ArrayList<DinghyClassHalDTO>();
+		ObjectMapper objectMapper = JsonMapper.builder()
+				.addModule(new JavaTimeModule())
+				.build();
+		String json = restTemplate.getForEntity(url, String.class).getBody();
 		try {
-			root = objectMapper.readTree(response.getBody());
-			String sailNumber = root.get("sailNumber").asText(); 
-			DinghyClass dinghyClass = getDinghyClassByURL(root.path("_links").path("dinghyClass").path("href").asText());
-			dinghy = new Dinghy(sailNumber, dinghyClass);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			TypeReference<List<DinghyClassHalDTO>> typeReference = new TypeReference<List<DinghyClassHalDTO>>() {};
+			JsonNode rootNode = objectMapper.readTree(json);
+			JsonNode dinghyClassesNode = rootNode.path("_embedded").path("dinghyClasses");
+			dinghyClasses = objectMapper.convertValue(dinghyClassesNode, typeReference);
 		}
-		return dinghy;
+		catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return dinghyClasses;
 	}
 	
-	public DinghyClass getDinghyClassByURL(String url) {
-		return restTemplate.getForObject(url, DinghyClass.class);
+	public FleetHalDTO getFleetByURL(String url) {
+		return restTemplate.getForObject(url, FleetHalDTO.class);
 	}
 }
