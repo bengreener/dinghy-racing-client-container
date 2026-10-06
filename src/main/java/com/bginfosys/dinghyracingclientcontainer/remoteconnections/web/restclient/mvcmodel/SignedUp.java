@@ -34,6 +34,18 @@ public class SignedUp extends AbstractMVCEntity implements Comparable<SignedUp> 
 
 	@Override
 	public int compareTo(SignedUp signedUp) {
+		// if both positions are null values are equal
+		if (this.getPosition() == null && signedUp.getPosition() == null) {
+			return 0;
+		}
+		// if this.position is null - this entry came after any entry with a position
+		if (this.getPosition() == null) {
+			return 1;
+		}
+		// if signedUp position is null - this entry came before any entry without a position
+		if (signedUp.getPosition() == null) {
+			return -1;
+		}
 		return signedUpHalDTO.getPosition().compareTo(signedUp.getPosition());
 	}
 }
